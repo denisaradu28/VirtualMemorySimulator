@@ -1,0 +1,14 @@
+C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation\bin\Debug\net9.0\VirtualMemorySimulation.exe
+C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation\bin\Debug\net9.0\VirtualMemorySimulation.deps.json
+C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation\bin\Debug\net9.0\VirtualMemorySimulation.runtimeconfig.json
+C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation\bin\Debug\net9.0\VirtualMemorySimulation.dll
+C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation\bin\Debug\net9.0\VirtualMemorySimulation.pdb
+C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation\obj\Debug\net9.0\VirtualMemorySimulation.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation\obj\Debug\net9.0\VirtualMemorySimulation.AssemblyInfoInputs.cache
+C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation\obj\Debug\net9.0\VirtualMemorySimulation.AssemblyInfo.cs
+C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation\obj\Debug\net9.0\VirtualMemorySimulation.csproj.CoreCompileInputs.cache
+C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation\obj\Debug\net9.0\VirtualMemorySimulation.dll
+C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation\obj\Debug\net9.0\refint\VirtualMemorySimulation.dll
+C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation\obj\Debug\net9.0\VirtualMemorySimulation.pdb
+C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation\obj\Debug\net9.0\VirtualMemorySimulation.genruntimeconfig.cache
+C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation\obj\Debug\net9.0\ref\VirtualMemorySimulation.dll

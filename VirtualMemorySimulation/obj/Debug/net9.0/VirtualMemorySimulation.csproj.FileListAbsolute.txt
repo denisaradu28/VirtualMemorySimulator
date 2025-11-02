@@ -12,3 +12,4 @@ C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulati
 C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation\obj\Debug\net9.0\VirtualMemorySimulation.pdb
 C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation\obj\Debug\net9.0\VirtualMemorySimulation.genruntimeconfig.cache
 C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation\obj\Debug\net9.0\ref\VirtualMemorySimulation.dll
+C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation\obj\Debug\net9.0\VirtualMemorySimulation.sourcelink.json

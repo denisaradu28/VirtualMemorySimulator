@@ -16,11 +16,25 @@ namespace VirtualMemorySimulation
             Console.WriteLine($"Page Faults: {result.Faults}");
             Console.WriteLine($"Hits: {result.Hits}");
 
-            // Optional: show each step
             for (int i = 0; i < result.FramesHistory.Count; i++)
             {
                 Console.Write($"Step {i + 1}: ");
-                Console.WriteLine(string.Join(" ", result.FramesHistory[i].Select(p => p?.ToString() ?? "-")));            }
+                Console.WriteLine(string.Join(" ", result.FramesHistory[i].Select(p => p?.ToString() ?? "-")));
+            }
+
+            Console.WriteLine($"\nFifo:\n");
+
+            IPageReplacementAlgorithm alg2 = new FifoAlgorithm();
+            var result2 = alg2.Run(frames, referenceString);
+
+            Console.WriteLine($"Page Faults: {result2.Faults}");
+            Console.WriteLine($"Hits: {result2.Hits}");
+
+            for (int i = 0; i < result.FramesHistory.Count; i++)
+            {
+                Console.Write($"Step {i + 1}: ");
+                Console.WriteLine(string.Join(" ", result2.FramesHistory[i].Select(p => p?.ToString() ?? "-")));
+            } 
         }
     }
 }

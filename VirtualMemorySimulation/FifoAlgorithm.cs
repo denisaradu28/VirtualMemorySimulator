@@ -14,28 +14,32 @@ namespace VirtualMemorySimulation
             foreach(int page in referenceString)
             {
                 bool hit = frames.Contains(page);
-                if(hit)
+                if (hit)
                 {
+                    result.Hits++;
                     result.IsFault.Add(false);
-                    result.FramesHistory.Add(frames.ToArray());
-                    continue;
+                    //result.FramesHistory.Add(frames.ToArray());
+                    //continue;
                 }
 
-                result.IsFault.Add(true);
-                if(queue.Count < framesCount)
-                {
-                    int free = Array.FindIndex(frames, f => !f.HasValue);
-                    frames[free] = page;
-                    queue.Enqueue(page);
-                }
                 else
                 {
-                    int victim = queue.Dequeue();
-                    int idx = Array.IndexOf(frames, victim);
-                    frames[idx] = page;
-                    queue.Enqueue(page);
+                    result.Faults++;
+                    result.IsFault.Add(true);
+                    if (queue.Count < framesCount)
+                    {
+                        int free = Array.FindIndex(frames, f => !f.HasValue);
+                        frames[free] = page;
+                        queue.Enqueue(page);
+                    }
+                    else
+                    {
+                        int victim = queue.Dequeue();
+                        int idx = Array.IndexOf(frames, victim);
+                        frames[idx] = page;
+                        queue.Enqueue(page);
+                    }
                 }
-
                 result.FramesHistory.Add(frames.ToArray());
             }
 

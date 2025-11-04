@@ -7,6 +7,7 @@ namespace VirtualMemorySimulation
     {
         static void Main()
         {
+
             int[] referenceString = { 7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3 };
             int frames = 3;
 
@@ -34,6 +35,20 @@ namespace VirtualMemorySimulation
             {
                 Console.Write($"Step {i + 1}: ");
                 Console.WriteLine(string.Join(" ", result2.FramesHistory[i].Select(p => p?.ToString() ?? "-")));
+            } 
+
+            Console.WriteLine($"\nOptimal:\n");
+
+            IPageReplacementAlgorithm alg3 = new OptimalAlgorithm();
+            var result3 = alg3.Run(frames, referenceString);
+
+            Console.WriteLine($"Page Faults: {result3.Faults}");
+            Console.WriteLine($"Hits: {result3.Hits}");
+
+            for (int i = 0; i < result.FramesHistory.Count; i++)
+            {
+                Console.Write($"Step {i + 1}: ");
+                Console.WriteLine(string.Join(" ", result3.FramesHistory[i].Select(p => p?.ToString() ?? "-")));
             } 
         }
     }

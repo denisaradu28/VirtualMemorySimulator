@@ -9,46 +9,48 @@ namespace VirtualMemorySimulation
         public SimulatorResult Run(int framesCount, int[] referenceString)
         {
             var result = new SimulatorResult();
-            var frames = new int?[framesCount];
-            var lastUsed = new Dictionary<int, int>();
+            var memory = new HashSet<int>(framesCount); 
+            var lastUsed = new Dictionary<int, int>();  
+            var frames = new int?[framesCount];         
 
             for (int i = 0; i < referenceString.Length; i++)
             {
                 int page = referenceString[i];
-                bool hit = frames.Contains(page);
 
-                if (hit)
+                if (memory.Contains(page))
                 {
                     result.Hits++;
-                    lastUsed[page] = i;
                     result.IsFault.Add(false);
                 }
+
                 else
                 {
                     result.Faults++;
                     result.IsFault.Add(true);
 
-                    int free = Array.FindIndex(frames, f => !f.HasValue);
-
-                    if (free != -1)
+                    if (memory.Count < framesCount)
                     {
-                        frames[free] = page;
+                        memory.Add(page);
+
+                        int freeIdx = Array.FindIndex(frames, f => !f.HasValue);
+                        frames[freeIdx] = page;
                     }
                     else
                     {
-                        int lruPage = frames
-                            .Where(f => f.HasValue)
-                            .Select(f => f.Value)
-                            .OrderBy(f => lastUsed[f])
+                        int lruPage = memory
+                            .OrderBy(p => lastUsed[p])
                             .First();
 
                         int idx = Array.IndexOf(frames, lruPage);
                         frames[idx] = page;
+
+                        memory.Remove(lruPage);
+                        memory.Add(page);
                         lastUsed.Remove(lruPage);
                     }
-
-                    lastUsed[page] = i;
                 }
+
+                lastUsed[page] = i;
 
                 result.FramesHistory.Add(frames.ToArray());
             }

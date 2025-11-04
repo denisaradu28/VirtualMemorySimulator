@@ -1,49 +1,53 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using VirtualMemorySimulation;
 
-namespace VirtualMemorySimulation
+public class FifoAlgorithm : IPageReplacementAlgorithm
 {
-    public class FifoAlgorithm : IPageReplacementAlgorithm
+    public SimulatorResult Run(int framesCount, int[] referenceString)
     {
-        public SimulatorResult Run(int framesCount, int[] referenceString){
-            var result = new SimulatorResult();
-            var frames = new int?[framesCount];
-            var queue = new Queue<int>();
+        var result = new SimulatorResult();
+        var memory = new HashSet<int>(framesCount); 
+        var queue = new Queue<int>();              
+        var frames = new int?[framesCount];        
 
-            foreach(int page in referenceString)
+        foreach (int page in referenceString)
+        {
+            if (memory.Contains(page))
             {
-                bool hit = frames.Contains(page);
-                if (hit)
-                {
-                    result.Hits++;
-                    result.IsFault.Add(false);
-                    //result.FramesHistory.Add(frames.ToArray());
-                    //continue;
-                }
+                result.Hits++;
+                result.IsFault.Add(false);
+            }
+            else
+            {
+                result.Faults++;
+                result.IsFault.Add(true);
 
+                if (memory.Count < framesCount)
+                {
+                    memory.Add(page);
+
+                    int freeIdx = Array.FindIndex(frames, f => !f.HasValue);
+                    frames[freeIdx] = page;
+                    queue.Enqueue(page);
+                }
                 else
                 {
-                    result.Faults++;
-                    result.IsFault.Add(true);
-                    if (queue.Count < framesCount)
-                    {
-                        int free = Array.FindIndex(frames, f => !f.HasValue);
-                        frames[free] = page;
-                        queue.Enqueue(page);
-                    }
-                    else
-                    {
-                        int victim = queue.Dequeue();
-                        int idx = Array.IndexOf(frames, victim);
-                        frames[idx] = page;
-                        queue.Enqueue(page);
-                    }
+                    int oldestPage = queue.Dequeue();
+                    memory.Remove(oldestPage);
+
+                    memory.Add(page);
+                    queue.Enqueue(page);
+
+                    int idx = Array.IndexOf(frames, oldestPage);
+                    frames[idx] = page;
                 }
-                result.FramesHistory.Add(frames.ToArray());
             }
 
-            return result;
+            result.FramesHistory.Add(frames.ToArray());
         }
+
+        return result;
     }
 }

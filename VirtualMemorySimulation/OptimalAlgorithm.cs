@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using VirtualMemorySimulation;
 
 public class OptimalAlgorithm : IPageReplacementAlgorithm
@@ -8,51 +9,39 @@ public class OptimalAlgorithm : IPageReplacementAlgorithm
     public SimulatorResult Run(int framesCount, int[] referenceString)
     {
         var result = new SimulatorResult();
+        var memory = new HashSet<int>(framesCount);
         var frames = new int?[framesCount];
 
         for (int i = 0; i < referenceString.Length; i++)
         {
             int page = referenceString[i];
 
-            if (frames.Contains(page))
+            if (memory.Contains(page))
             {
                 result.Hits++;
                 result.IsFault.Add(false);
-                result.FramesHistory.Add(frames.ToArray());
-                continue;
-            }
-
-            result.Faults++;
-            result.IsFault.Add(true);
-
-            int freeIdx = Array.FindIndex(frames, f => !f.HasValue);
-            if (freeIdx != -1)
-            {
-                frames[freeIdx] = page;
             }
             else
             {
-                int replaceIdx = 0;
-                int farthest = -1;
+                result.Faults++;
+                result.IsFault.Add(true);
 
-                for (int f = 0; f < frames.Length; f++)
+                if (memory.Count < framesCount)
                 {
-                    int crt = frames[f]!.Value;
-                    int nextUse = Array.IndexOf(referenceString, crt, i + 1);
-
-                    if (nextUse == -1)
-                    {
-                        replaceIdx = f;
-                        break;
-                    }
-                    if (nextUse > farthest)
-                    {
-                        farthest = nextUse;
-                        replaceIdx = f;
-                    }
+                    memory.Add(page);
+                    int freeIdx = Array.FindIndex(frames, f => !f.HasValue);
+                    frames[freeIdx] = page;
                 }
+                else
+                {
+                    int pageToReplace = FindPageToReplace(frames, referenceString, i + 1);
 
-                frames[replaceIdx] = page;
+                    memory.Remove(pageToReplace);
+                    memory.Add(page);
+
+                    int replaceIdx = Array.IndexOf(frames, pageToReplace);
+                    frames[replaceIdx] = page;
+                }
             }
 
             result.FramesHistory.Add(frames.ToArray());
@@ -60,4 +49,32 @@ public class OptimalAlgorithm : IPageReplacementAlgorithm
 
         return result;
     }
+    
+
+    private int FindPageToReplace(int?[] frames, int[] referenceString, int startIndex)
+    {
+        int farthestIdx = -1;
+        int pageToReplace = -1;
+
+        foreach (var frame in frames)
+        {
+            if (!frame.HasValue)
+                continue;
+
+            int nextUse = Array.IndexOf(referenceString, frame.Value, startIndex);
+
+            if (nextUse == -1)
+            {
+                return frame.Value;
+            }
+
+            if (nextUse > farthestIdx)
+            {
+                farthestIdx = nextUse;
+                pageToReplace = frame.Value;
+            }
+        }
+        return pageToReplace;
+    }
+
 }

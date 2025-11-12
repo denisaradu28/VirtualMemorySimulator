@@ -11,10 +11,10 @@ namespace VirtualMemorySimulation
         double MissRate { get; }
 
         List<Frame> Frames { get; }
-        Dictionary<int, PageTableEntry> pageTable { get; }
+        Dictionary<int, PageTableEntry> PageTable { get; }
 
         SimulatorResult AccessPage(int pageId); //ruleaza paginile pe rand (simularea din interfata)
         int? GetFrame(int idx); 
-        public SimulatorResult Run(int framesCount, int[] referenceString); //ruleaza tot odata (simulare consola)
+        SimulatorResult Run(int framesCount, int[] referenceString); //ruleaza tot odata (simulare consola)
     }
 }

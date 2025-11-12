@@ -7,52 +7,38 @@ namespace VirtualMemorySimulation
     {
         static void Main()
         {
-
-            int[] referenceString = {2, 3, 2, 0, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 3, 2, 0};
+            int[] referenceString = { 2, 3, 2, 0, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 3, 2, 0 };
             int frames = 3;
 
-            Console.WriteLine($"\nLRU:\n");
+            Console.WriteLine("\nLRU\n");
+            IPageReplacementAlgorithm lru = new LRUAlgorithm(frames);
+            RunAlgorithm(lru, frames, referenceString);
 
+            Console.WriteLine("\nFIFO\n");
+            IPageReplacementAlgorithm fifo = new FifoAlgorithm(frames);
+            RunAlgorithm(fifo, frames, referenceString);
 
-            IPageReplacementAlgorithm alg = new LRUAlgorithm();
+            Console.WriteLine("\nOPTIMAL\n");
+            IPageReplacementAlgorithm optimal = new OptimalAlgorithm(frames);
+            RunAlgorithm(optimal, frames, referenceString);
+
+        }
+
+        static void RunAlgorithm(IPageReplacementAlgorithm alg, int frames, int[] referenceString)
+        {
             var result = alg.Run(frames, referenceString);
 
-            Console.WriteLine($"Page Faults: {result.Faults}");
-            Console.WriteLine($"Hits: {result.Hits}");
+            Console.WriteLine($"Page Faults: {result.PageFaults}");
+            Console.WriteLine($"Hits: {result.TotalAccesses - result.PageFaults}");
+            Console.WriteLine();
 
-            for (int i = 0; i < result.FramesHistory.Count; i++)
+            for (int i = 0; i < result.FrameHistory.Count; i++)
             {
                 Console.Write($"Step {i + 1}: ");
-                Console.WriteLine(string.Join(" ", result.FramesHistory[i].Select(p => p?.ToString() ?? "-")));
+                Console.WriteLine(string.Join(" ", result.FrameHistory[i].Select(f => f?.ToString() ?? "-")));
             }
 
-            Console.WriteLine($"\nFifo:\n");
-
-            IPageReplacementAlgorithm alg2 = new FifoAlgorithm();
-            var result2 = alg2.Run(frames, referenceString);
-
-            Console.WriteLine($"Page Faults: {result2.Faults}");
-            Console.WriteLine($"Hits: {result2.Hits}");
-
-            for (int i = 0; i < result2.FramesHistory.Count; i++)
-            {
-                Console.Write($"Step {i + 1}: ");
-                Console.WriteLine(string.Join(" ", result2.FramesHistory[i].Select(p => p?.ToString() ?? "-")));
-            } 
-
-            Console.WriteLine($"\nOptimal:\n");
-
-            IPageReplacementAlgorithm alg3 = new OptimalAlgorithm();
-            var result3 = alg3.Run(frames, referenceString);
- 
-            Console.WriteLine($"Page Faults: {result3.Faults}");
-            Console.WriteLine($"Hits: {result3.Hits}");
-
-            for (int i = 0; i < result3.FramesHistory.Count; i++)
-            {
-                Console.Write($"Step {i + 1}: ");
-                Console.WriteLine(string.Join(" ", result3.FramesHistory[i].Select(p => p?.ToString() ?? "-")));
-            }
         }
+
     }
-} 
+}

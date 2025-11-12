@@ -1,80 +1,164 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using VirtualMemorySimulation;
+using System.Globalization;
 
-public class OptimalAlgorithm : IPageReplacementAlgorithm
+
+namespace VirtualMemorySimulation
 {
-    public SimulatorResult Run(int framesCount, int[] referenceString)
+    public class OptimalAlgorithm : IPageReplacementAlgorithm
     {
-        var result = new SimulatorResult();
-        var memory = new HashSet<int>(framesCount);
-        var frames = new int?[framesCount];
+        public int FrameCount { get; private set; }
+        public List<Frame> Frames { get; private set; }
+        public Dictionary<int, PageTableEntry> PageTable { get; private set; }
 
-        for (int i = 0; i < referenceString.Length; i++)
+        public int TotalAccesses { get; private set; }
+        public int PageFaults { get; private set; }
+        public double HitRate => TotalAccesses == 0 ? 0 : (double)(TotalAccesses - PageFaults) / TotalAccesses;
+        public double MissRate => 1 - HitRate;
+
+        private int[] referenceString;
+        private int crtPosition;
+
+        public OptimalAlgorithm(int frameCount)
         {
-            int page = referenceString[i];
-
-            if (memory.Contains(page))
+            FrameCount = frameCount;
+            Frames = new List<Frame>();
+            for (int i = 0; i < frameCount; i++)
             {
-                result.Hits++;
-                result.IsFault.Add(false);
-            }
-            else
-            {
-                result.Faults++;
-                result.IsFault.Add(true);
-
-                if (memory.Count < framesCount)
-                {
-                    memory.Add(page);
-                    int freeIdx = Array.FindIndex(frames, f => !f.HasValue);
-                    frames[freeIdx] = page;
-                }
-                else
-                {
-                    int pageToReplace = FindPageToReplace(frames, referenceString, i + 1);
-
-                    memory.Remove(pageToReplace);
-                    memory.Add(page);
-
-                    int replaceIdx = Array.IndexOf(frames, pageToReplace);
-                    frames[replaceIdx] = page;
-                }
+                Frames.Add(new Frame(i));
             }
 
-            result.FramesHistory.Add(frames.ToArray());
+            PageTable = new Dictionary<int, PageTableEntry>();
+            TotalAccesses = 0;
+            PageFaults = 0;
+            crtPosition = 0;
         }
 
-        return result;
-    }
-    
-
-    private int FindPageToReplace(int?[] frames, int[] referenceString, int startIndex)
-    {
-        int farthestIdx = -1;
-        int pageToReplace = -1;
-
-        foreach (var frame in frames)
+        public SimulatorResult AccessPage(int pageId)
         {
-            if (!frame.HasValue)
-                continue;
-
-            int nextUse = Array.IndexOf(referenceString, frame.Value, startIndex);
-
-            if (nextUse == -1)
-            {
-                return frame.Value;
-            }
-
-            if (nextUse > farthestIdx)
-            {
-                farthestIdx = nextUse;
-                pageToReplace = frame.Value;
-            }
+            throw new InvalidOperationException("Optimal needs a reference string to work");
         }
-        return pageToReplace;
-    }
 
+        public SimulatorResult Run(int framesCount, int[] referenceString)
+        {
+            FrameCount = framesCount;
+            this.referenceString = referenceString;
+            crtPosition = 0;
+
+            Frames = new List<Frame>();
+            for (int i = 0; i < framesCount; i++)
+                Frames.Add(new Frame(i));
+
+            PageTable.Clear();
+            TotalAccesses = 0;
+            PageFaults = 0;
+
+            SimulatorResult lastResult = new SimulatorResult();
+
+            for (int i = 0; i < referenceString.Length; i++)
+            {
+                int page = referenceString[i];
+                TotalAccesses++;
+
+                bool wasHit = PageTable.ContainsKey(page) && PageTable[page].Valid;
+                int? evictedPageId = null;
+
+                if (!wasHit)
+                {
+                    PageFaults++;
+
+                    int freeIdx = FindFreeFrame();
+                    if (freeIdx != -1)
+                    {
+                        Frames[freeIdx].PageId = page;
+                        PageTable[page] = new PageTableEntry(page)
+                        {
+                            Valid = true,
+                            FrameIdx = freeIdx
+                        };
+                    }
+                    else
+                    {
+                        int pageToReplace = findPageToReplace(i + 1);
+
+                        int victimFrameIdx = PageTable[pageToReplace].FrameIdx ?? 0;
+                        evictedPageId = pageToReplace;
+
+                        PageTable[pageToReplace].Valid = false;
+                        PageTable[pageToReplace].FrameIdx = null;
+
+                        Frames[victimFrameIdx].PageId = page;
+                        PageTable[page] = new PageTableEntry(page)
+                        {
+                            Valid = true,
+                            FrameIdx = victimFrameIdx
+                        };
+                    }
+                }
+
+                List<int?> snapshot = Frames.Select(f => f.PageId).ToList();
+                lastResult.FrameHistory.Add(snapshot);
+
+            }
+            
+            lastResult.TotalAccesses = TotalAccesses;
+            lastResult.PageFaults = PageFaults;
+            lastResult.HitRate = HitRate;
+            lastResult.MissRate = MissRate;
+
+            return lastResult;
+        }
+
+        public int? GetFrame(int idx)
+        {
+            if (idx < 0 || idx >= Frames.Count)
+                return null;
+
+            return Frames[idx].PageId;
+        }
+
+        private int FindFreeFrame()
+        {
+            for (int i = 0; i < Frames.Count; i++)
+            {
+                if (!Frames[i].isValid)
+                    return i;
+            }
+            return -1;
+        }
+
+        private int findPageToReplace(int startIdx)
+        {
+            int farthestUse = -1;
+            int pageToReplace = -1;
+
+            for (int i = 0; i < Frames.Count; i++)
+            {
+                int? crtPage = Frames[i].PageId;
+                if (!crtPage.HasValue)
+                    continue;
+
+                int nextUse = -1;
+                for (int j = startIdx; j < referenceString.Length; j++)
+                {
+                    if (referenceString[j] == crtPage.Value)
+                    {
+                        nextUse = j;
+                        break;
+                    }
+                }
+
+                if (nextUse == -1)
+                    return crtPage.Value;
+
+                if (nextUse > farthestUse)
+                {
+                    farthestUse = nextUse;
+                    pageToReplace = crtPage.Value;
+                }
+            }
+            return pageToReplace;
+        }
+
+    }
 }

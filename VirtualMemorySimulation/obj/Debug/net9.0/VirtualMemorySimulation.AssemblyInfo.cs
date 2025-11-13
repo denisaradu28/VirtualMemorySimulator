@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VirtualMemorySimulation")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+30a594513a005640fb9bf864cc06ac10e23b68bc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+12e21af2ddaa64d409ddbdbff147eade8a4dc88e")]
 [assembly: System.Reflection.AssemblyProductAttribute("VirtualMemorySimulation")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VirtualMemorySimulation")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

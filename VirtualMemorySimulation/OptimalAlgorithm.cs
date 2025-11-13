@@ -17,8 +17,7 @@ namespace VirtualMemorySimulation
         public double MissRate => 1 - HitRate;
 
         private int[] referenceString;
-        private int crtPosition;
-
+    
         public OptimalAlgorithm(int frameCount)
         {
             FrameCount = frameCount;
@@ -31,7 +30,6 @@ namespace VirtualMemorySimulation
             PageTable = new Dictionary<int, PageTableEntry>();
             TotalAccesses = 0;
             PageFaults = 0;
-            crtPosition = 0;
         }
 
         public SimulatorResult AccessPage(int pageId)
@@ -43,7 +41,6 @@ namespace VirtualMemorySimulation
         {
             FrameCount = framesCount;
             this.referenceString = referenceString;
-            crtPosition = 0;
 
             Frames = new List<Frame>();
             for (int i = 0; i < framesCount; i++)

@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run WPF UI",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/VirtualMemorySimulator.UI/bin/Debug/net9.0-windows/VirtualMemorySimulator.UI.dll",
+      "cwd": "${workspaceFolder}/VirtualMemorySimulator.UI",
+      "console": "internalConsole",
+      "stopAtEntry": false
+    }
+  ]
+}
+ 

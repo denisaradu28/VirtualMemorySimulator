@@ -1,0 +1,88 @@
+﻿<Window x:Class="VirtualMemorySimulation.UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Virtual Memory Simulator" 
+        WindowStartupLocation="CenterScreen"
+        Width="900" Height="600"
+        Background="#F4F6F8">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Virtual Memory Simulator"
+                   FontSize="32"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   Margin="0,20"/>
+
+        <Border Grid.Row="1"
+                Width="500"
+                Padding="30"
+                CornerRadius="15"
+                Background="White"
+                BorderBrush="#D0D4D9"
+                BorderThickness="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top">
+
+            <StackPanel>
+
+                <TextBlock Text="Select input mode:"
+                           FontWeight="Bold"
+                           Margin="0,5"/>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <RadioButton x:Name="TryExampleRB"
+                                 Content="Try Example"/>
+
+                    <RadioButton x:Name="UserInputRB"
+                                 Content="User Input"
+                                 Margin="20,0,0,0"/>
+                </StackPanel>
+
+                <StackPanel x:Name="UserInputPanel"
+                            Margin="0,10"
+                            Visibility="Collapsed">
+
+                    <TextBlock Text="Reference String:"/>
+                    <TextBox x:Name="ReferenceStringBox" Margin="0,2,0,0"/>
+
+                    <TextBlock Text="Number of Frames:"
+                               Margin="0,10,0,0"/>
+                    <TextBox x:Name="FramesBox" Margin="0,2,0,0"/>
+                </StackPanel>
+
+                <StackPanel x:Name="ExamplePanel" Margin="0,10">
+                    <TextBlock Text="Example reference string:"/>
+                    <TextBlock Text="2,3,2,0,2,3,0,1,2,3,0,1,2,3,4,3,2,0"
+                               FontStyle="Italic"
+                               Foreground="#555"/>
+                    <TextBlock Text="Frames: 3" Margin="0,5,0,0"/>
+                </StackPanel>
+
+                <TextBlock Text="Select Algorithm:"
+                           FontWeight="Bold"
+                           Margin="0,20,0,5"/>
+
+                <ComboBox x:Name="AlgorithmBox" SelectedIndex="0">
+                    <ComboBoxItem Content="FIFO"/>
+                    <ComboBoxItem Content="LRU"/>
+                    <ComboBoxItem Content="Optimal"/>
+                </ComboBox>
+
+                <Button Content="Run Simulation"
+                        Margin="0,25,0,0"
+                        Height="45"
+                        Background="#4A83FF"
+                        Foreground="White"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Click="RunSimulation"/>
+            </StackPanel>
+        </Border>
+
+    </Grid>
+</Window>

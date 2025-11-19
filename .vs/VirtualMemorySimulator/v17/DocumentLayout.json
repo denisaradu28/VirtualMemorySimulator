@@ -1,0 +1,53 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Denisa\\Desktop\\SSC\\Proiect\\VirtualMemorySimulator\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{13364C11-B17A-4044-9D2E-4D896E644ACD}|VirtualMemorySimulation.UI\\VirtualMemorySimulation.UI.csproj|c:\\users\\denisa\\desktop\\ssc\\proiect\\virtualmemorysimulator\\virtualmemorysimulation.ui\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{13364C11-B17A-4044-9D2E-4D896E644ACD}|VirtualMemorySimulation.UI\\VirtualMemorySimulation.UI.csproj|solutionrelative:virtualmemorysimulation.ui\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{13364C11-B17A-4044-9D2E-4D896E644ACD}|VirtualMemorySimulation.UI\\VirtualMemorySimulation.UI.csproj|c:\\users\\denisa\\desktop\\ssc\\proiect\\virtualmemorysimulator\\virtualmemorysimulation.ui\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{13364C11-B17A-4044-9D2E-4D896E644ACD}|VirtualMemorySimulation.UI\\VirtualMemorySimulation.UI.csproj|solutionrelative:virtualmemorysimulation.ui\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\Denisa\\Desktop\\SSC\\Proiect\\VirtualMemorySimulator\\VirtualMemorySimulation.UI\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "VirtualMemorySimulation.UI\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\Denisa\\Desktop\\SSC\\Proiect\\VirtualMemorySimulator\\VirtualMemorySimulation.UI\\MainWindow.xaml.cs",
+              "RelativeToolTip": "VirtualMemorySimulation.UI\\MainWindow.xaml.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAiwBsAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-19T19:01:41.1Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\Denisa\\Desktop\\SSC\\Proiect\\VirtualMemorySimulator\\VirtualMemorySimulation.UI\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "VirtualMemorySimulation.UI\\MainWindow.xaml",
+              "ToolTip": "C:\\Users\\Denisa\\Desktop\\SSC\\Proiect\\VirtualMemorySimulator\\VirtualMemorySimulation.UI\\MainWindow.xaml",
+              "RelativeToolTip": "VirtualMemorySimulation.UI\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-11-19T18:56:03.172Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

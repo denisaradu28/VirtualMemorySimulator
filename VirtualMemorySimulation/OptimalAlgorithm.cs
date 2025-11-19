@@ -16,7 +16,9 @@ namespace VirtualMemorySimulation
         public double HitRate => TotalAccesses == 0 ? 0 : (double)(TotalAccesses - PageFaults) / TotalAccesses;
         public double MissRate => 1 - HitRate;
 
-        private int[] referenceString;
+        private int[]? referenceString;
+
+        private int crtTime = 0;
     
         public OptimalAlgorithm(int frameCount)
         {
@@ -49,6 +51,7 @@ namespace VirtualMemorySimulation
             PageTable.Clear();
             TotalAccesses = 0;
             PageFaults = 0;
+            crtTime = 0;
 
             SimulatorResult lastResult = new SimulatorResult();
 
@@ -60,7 +63,14 @@ namespace VirtualMemorySimulation
                 bool wasHit = PageTable.ContainsKey(page) && PageTable[page].Valid;
                 int? evictedPageId = null;
 
-                if (!wasHit)
+                crtTime++;
+
+                if(wasHit)
+                {
+                    int frameIdx = PageTable[page].FrameIdx ?? 0;
+                    Frames[frameIdx].LastUsedOrder = crtTime;
+                }
+                else
                 {
                     PageFaults++;
 
@@ -68,6 +78,8 @@ namespace VirtualMemorySimulation
                     if (freeIdx != -1)
                     {
                         Frames[freeIdx].PageId = page;
+                        Frames[freeIdx].LastUsedOrder = crtTime;
+
                         PageTable[page] = new PageTableEntry(page)
                         {
                             Valid = true,
@@ -76,7 +88,7 @@ namespace VirtualMemorySimulation
                     }
                     else
                     {
-                        int pageToReplace = findPageToReplace(i + 1);
+                        int pageToReplace = FindPageToReplace(i + 1);
 
                         int victimFrameIdx = PageTable[pageToReplace].FrameIdx ?? 0;
                         evictedPageId = pageToReplace;
@@ -85,6 +97,7 @@ namespace VirtualMemorySimulation
                         PageTable[pageToReplace].FrameIdx = null;
 
                         Frames[victimFrameIdx].PageId = page;
+                        Frames[victimFrameIdx].LastUsedOrder = crtTime;
                         PageTable[page] = new PageTableEntry(page)
                         {
                             Valid = true,
@@ -124,8 +137,26 @@ namespace VirtualMemorySimulation
             return -1;
         }
 
-        private int findPageToReplace(int startIdx)
+        private int FindPageToReplace(int startIdx)
         {
+            if(startIdx >= referenceString!.Length)
+            {
+                int oldest = int.MaxValue;
+                int lruPage = -1;
+
+                foreach(var frame in Frames)
+                {
+                    if(frame.PageId.HasValue && frame.LastUsedOrder < oldest)
+                    {
+                        oldest = frame.LastUsedOrder;
+                        lruPage = frame.PageId.Value;
+                    }
+                }
+                return lruPage;
+            }
+
+
+
             int farthestUse = -1;
             int pageToReplace = -1;
 
@@ -136,7 +167,7 @@ namespace VirtualMemorySimulation
                     continue;
 
                 int nextUse = -1;
-                for (int j = startIdx; j < referenceString.Length; j++)
+                for (int j = startIdx; j < referenceString!.Length; j++)
                 {
                     if (referenceString[j] == crtPage.Value)
                     {

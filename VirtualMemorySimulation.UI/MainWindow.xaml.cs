@@ -44,43 +44,60 @@ namespace VirtualMemorySimulation.UI
 
         private void RunSimulation(object sender, RoutedEventArgs e)
         {
-            int[] referenceString;
-            int frames;
-
-            if (TryExampleRB.IsChecked == true)
+            try
             {
-                referenceString = exampleRef;
-                frames = exampleFrames;
+
+                int[] referenceString;
+                int frames;
+
+
+                if (TryExampleRB.IsChecked == true)
+                {
+                    referenceString = exampleRef;
+                    frames = exampleFrames;
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(ReferenceStringBox.Text) || string.IsNullOrWhiteSpace(FramesBox.Text))
+                    {
+                        MessageBox.Show("Please fill all fields.");
+                        return;
+                    }
+                    try
+                    {
+                        referenceString = ReferenceStringBox.Text.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
+                        frames = int.Parse(FramesBox.Text);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Invalid input.");
+                        return;
+                    }
+                }
+                IPageReplacementAlgorithm algorithm = AlgorithmBox.SelectedIndex switch
+                {
+                    0 => new FifoAlgorithm(frames),
+                    1 => new LRUAlgorithm(frames),
+                    2 => new OptimalAlgorithm(frames),
+                    _ => new FifoAlgorithm(frames)
+                };
+
+                var result = algorithm.Run(frames, referenceString);
+
+
+
+                var win = new ResultsWindow(
+                    AlgorithmBox.Text,
+                    frames,
+                    result
+                );
+
+                win.Show();
             }
-            else
+            catch (Exception ex)
             {
-                if(string.IsNullOrWhiteSpace(ReferenceStringBox.Text) || string.IsNullOrWhiteSpace(FramesBox.Text))
-                {
-                    MessageBox.Show("Please fill all fields.");
-                    return;
-                }
-                try
-                {
-                    referenceString = ReferenceStringBox.Text.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
-                    frames = int.Parse(FramesBox.Text);
-                }
-                catch
-                {
-                    MessageBox.Show("Invalid input.");
-                    return;
-                }
+                MessageBox.Show("Error:\n" + ex.Message + "\n" + ex.StackTrace);
             }
-            IPageReplacementAlgorithm algorithm = AlgorithmBox.SelectedIndex switch
-            {
-                0 => new FifoAlgorithm(frames),
-                1 => new LRUAlgorithm(frames),
-                2 => new OptimalAlgorithm(frames),
-                _ => new FifoAlgorithm(frames)
-            };
-
-            SimulatorResult result = algorithm.Run(frames, referenceString);
-
-            MessageBox.Show($"Page Faults: {result.PageFaults}\nHit Rate: {result.HitRate:F2}");
         }
     }
 }

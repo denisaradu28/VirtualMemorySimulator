@@ -104,12 +104,14 @@ namespace VirtualMemorySimulation
                 HitRate = HitRate,
                 MissRate = MissRate,
                 FrameHistory = new List<List<int?>> { snapshot },
+                IsFault = new List<bool> { !wasHit },
+                ReferenceString = new List<int> { pageId },
                 FrameSnapshot = new List<Frame>()
             };
             
             foreach (var f in Frames)
             {
-                result.FrameSnapshot.Add(new Frame(f.Index) { PageId = f.PageId });
+                result.FrameSnapshot.Add(new Frame(f.Index) { PageId = f.PageId, LastUsedOrder = f.LastUsedOrder, LoadOrder = f.LoadOrder });
             }
 
             return result;
@@ -136,10 +138,23 @@ namespace VirtualMemorySimulation
             {
                 SimulatorResult stepResult = AccessPage(page);
                 lastResult.FrameHistory.Add(stepResult.FrameHistory[0]);
+                lastResult.IsFault.Add(stepResult.IsFault[0]);
+                lastResult.ReferenceString.Add(stepResult.PageId);
                 lastResult.TotalAccesses = stepResult.TotalAccesses;
                 lastResult.PageFaults = stepResult.PageFaults;
                 lastResult.HitRate = stepResult.HitRate;
                 lastResult.MissRate = stepResult.MissRate;
+            }
+
+            lastResult.FrameSnapshot = new List<Frame>();
+            foreach(var f in Frames)
+            {
+                lastResult.FrameSnapshot.Add(new Frame(f.Index)
+                {
+                    PageId = f.PageId,
+                    LastUsedOrder = f.LastUsedOrder,
+                    LoadOrder = f.LoadOrder
+                });
             }
 
             return lastResult;

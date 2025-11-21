@@ -14,6 +14,8 @@ namespace VirtualMemorySimulation
         public double MissRate { get; set; }
 
         public List<List<int?>> FrameHistory { get; set; } = new List<List<int?>>();
+        public List<bool> IsFault { get; set; } = new();
+        public List<int> ReferenceString { get; set; } = new();
 
         public override string ToString()
         {

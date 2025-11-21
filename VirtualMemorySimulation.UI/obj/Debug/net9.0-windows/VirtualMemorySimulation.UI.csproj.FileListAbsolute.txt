@@ -25,3 +25,6 @@ C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulati
 C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation.UI\obj\Debug\net9.0-windows\VirtualMemorySimulation.UI.pdb
 C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation.UI\obj\Debug\net9.0-windows\VirtualMemorySimulation.UI.genruntimeconfig.cache
 C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation.UI\obj\Debug\net9.0-windows\ref\VirtualMemorySimulation.UI.dll
+C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation.UI\obj\Debug\net9.0-windows\ResultsWindow.g.cs
+C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation.UI\obj\Debug\net9.0-windows\VirtualMemorySimulation.UI_MarkupCompile.lref
+C:\Users\Denisa\Desktop\SSC\Proiect\VirtualMemorySimulator\VirtualMemorySimulation.UI\obj\Debug\net9.0-windows\ResultsWindow.baml

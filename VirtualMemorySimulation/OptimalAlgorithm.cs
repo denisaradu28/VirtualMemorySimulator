@@ -108,6 +108,8 @@ namespace VirtualMemorySimulation
 
                 List<int?> snapshot = Frames.Select(f => f.PageId).ToList();
                 lastResult.FrameHistory.Add(snapshot);
+                lastResult.ReferenceString.Add(page);
+                lastResult.IsFault.Add(!wasHit);
 
             }
             
@@ -115,6 +117,18 @@ namespace VirtualMemorySimulation
             lastResult.PageFaults = PageFaults;
             lastResult.HitRate = HitRate;
             lastResult.MissRate = MissRate;
+
+            lastResult.FrameSnapshot = new List<Frame>();
+            foreach (var f in Frames)
+            {
+                lastResult.FrameSnapshot.Add(new Frame(f.Index)
+                {
+                    PageId = f.PageId,
+                    LastUsedOrder = f.LastUsedOrder,
+                    LoadOrder = f.LoadOrder
+                });
+            }
+
 
             return lastResult;
         }

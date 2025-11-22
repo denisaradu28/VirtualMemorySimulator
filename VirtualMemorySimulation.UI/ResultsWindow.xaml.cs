@@ -7,6 +7,7 @@ using System.Windows.Media.Animation;
 using VirtualMemorySimulation;
 using System.Windows.Threading;
 using System.Windows.Controls;
+using System.IO;
 
 namespace VirtualMemorySimulation.UI
 {
@@ -35,6 +36,8 @@ namespace VirtualMemorySimulation.UI
             _framesCount = frames;
 
             BuildFramesUI();
+            ComputePerformanceIndicators();
+            SaveRunSummaryToCsv();
 
             _timer = new DispatcherTimer
             {
@@ -79,6 +82,25 @@ namespace VirtualMemorySimulation.UI
                 border.Child = text;
                 FramesPanel.Children.Add(border);
             }
+        }
+
+        private void ComputePerformanceIndicators()
+        {
+            PerfPageFaults.Text = _result.PageFaults.ToString();
+
+            double faultRate = _result.MissRate * 100.0;
+            PerfFaultRate.Text = faultRate.ToString("F2") + "%";
+
+            double T_ram = 1.0;
+            double T_penalty = 100.0;
+            double amat = T_ram + _result.MissRate * T_penalty;
+            PerfAMAT.Text = amat.ToString("F2");
+
+            int lastStep = _result.FrameHistory.Count - 1;
+            int usedFrames = _result.FrameHistory[lastStep].Count(v => v.HasValue);
+            double util = (double)usedFrames / _framesCount * 100.0;
+            PerfMemoryUsage.Text = util.ToString("F1") + "%";
+
         }
 
         private void Timer_Tick(object? sender, EventArgs e)
@@ -144,12 +166,33 @@ namespace VirtualMemorySimulation.UI
                         if (border != null)
                             AnimateFrameBorder(border, isFault);
                     }
+                    else if (!isFault)
+                    {
+                        var border = FramesPanel.Children[i] as Border;
+                        if (border != null)
+                            AnimateHit(border);
+                    }
                 }
             }
 
             _previousSnapshot = new List<int?>(snapshot);
         }
 
+        private void AnimateHit(Border border)
+        {
+            Color hitColor = Color.FromRgb(204, 255, 204);
+
+            var anim = new ColorAnimation
+            {
+                From = hitColor,
+                To = Colors.White,
+                Duration = TimeSpan.FromSeconds(0.4)
+            };
+
+            var brush = new SolidColorBrush(hitColor);
+            border.Background = brush;
+            brush.BeginAnimation(SolidColorBrush.ColorProperty, anim);
+        }
         private void AnimateFrameBorder(Border border, bool isFault)
         {
             Color fromColor = isFault ? Color.FromRgb(255, 204, 203) : Color.FromRgb(204, 255, 204);
@@ -221,5 +264,40 @@ namespace VirtualMemorySimulation.UI
         {
             this.Close();
         }
+
+        private void ChartsClick(object sender, RoutedEventArgs e)
+        {
+            var win = new ChartsWindow();
+            win.Show();
+        }
+
+
+        private void SaveRunSummaryToCsv()
+        {
+            string alg = AlgorithmLabel.Text;
+
+            double faultRate = _result.MissRate;
+            double amat = 1 + faultRate * 100;
+
+            var finalSnapshot = _result.FrameHistory.Last();
+            int usedFrames = finalSnapshot.Count(f => f.HasValue);
+            double memUsage = (double)usedFrames / _framesCount * 100.0;
+
+            string folder = DataPaths.RunsFolder;
+
+            int index = Directory.GetFiles(folder, $"run_{alg}_*.csv").Length + 1;
+            string file = Path.Combine(folder, $"run_{alg}_{index}.csv");
+
+            using (var w = new StreamWriter(file))
+            {
+                w.WriteLine($"Algorithm,{alg}");
+                w.WriteLine($"PageFaults,{_result.PageFaults}");
+                w.WriteLine($"TotalAccesses,{_result.TotalAccesses}");
+                w.WriteLine($"FaultRate,{faultRate}");
+                w.WriteLine($"AMAT,{amat}");
+                w.WriteLine($"MemoryUsage,{memUsage}");
+            }
+        }
+
     }
 }

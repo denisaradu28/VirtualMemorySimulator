@@ -15,6 +15,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -73,6 +74,72 @@
 
         <Border Grid.Row="2"
                 Background="#FFFFF4F4"
+                CornerRadius="12"
+                Padding="14"
+                Margin="0,0,0,16"
+                BorderBrush="#FFE1BEE7"
+                BorderThickness="2">
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel Margin="16, 0">
+                    <TextBlock Text="Page Faults"
+                               FontWeight="Bold"
+                               FontSize="16"
+                               Foreground="#FFBE0966"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="PerfPageFaults"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               Foreground="#FFAD1457"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Margin="16, 0">
+                    <TextBlock Text="Fault Rate"
+                               FontWeight="Bold"
+                               FontSize="16"
+                               Foreground="#FFBE0966"
+                            HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="PerfFaultRate"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               Foreground="#FFAD1457"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Margin="16,0">
+                    <TextBlock Text="AMAT"
+                               FontWeight="Bold"
+                               FontSize="16"
+                               Foreground="#FFBE0966"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="PerfAMAT"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               Foreground="#FFAD1457"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Margin="16,0">
+                    <TextBlock Text="Memory Usage"
+                               FontWeight="Bold"
+                               FontSize="16"
+                               Foreground="#FFBE0966"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="PerfMemoryUsage"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               Foreground="#FFAD1457"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+
+            </StackPanel>
+
+        </Border>
+
+
+        <Border Grid.Row="3"
+                Background="#FFFFF4F4"
                 CornerRadius="16"
                 Padding="16"
                 BorderBrush="#FFE1BEE7"
@@ -93,7 +160,7 @@
             </StackPanel>
         </Border>
 
-        <StackPanel Grid.Row="3"
+        <StackPanel Grid.Row="4"
                     Orientation="Horizontal"
                     HorizontalAlignment="Center"
                     Margin="0,18,0,0">
@@ -126,6 +193,10 @@
                     Padding="10, 4"
                     Background="#FFD174A7"
                     Click="CloseClick"/>
+            <Button Content="Charts"
+                    Padding="10,4"
+                    Background="#FFD174A7"
+                    Click="ChartsClick"/>
 
         </StackPanel>
                     
